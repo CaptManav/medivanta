@@ -1,0 +1,85 @@
+{
+  "intents": [
+    {
+      "name": "greeting",
+      "examples": [
+        "hi", "hello", "hey", "namaste", "namaskar", "good morning", "good evening", "kasa kay", "kasa ahes", "who are you", "help", "madat pahije"
+      ]
+    },
+    {
+      "name": "bed_availability",
+      "examples": [
+        "bed", "beds", "bed available", "bed status", "icu bed", "is there a bed", "ventilator available",
+        "kitne bed khali hai", "bed ahet ka", "icu khali ahe ka", "oxygen bed", "are beds free",
+        "check beds at samarth", "awari bed status", "bed milenge kya", "bed ahet ka hospital madhe"
+      ]
+    },
+    {
+      "name": "opd_timing",
+      "examples": [
+        "opd", "opd timing", "opd time", "when is opd", "doctor timing", "clinic time",
+        "opd kiti vajta ahe", "doctor kab baithenge", "opd schedule", "timing of dr awari",
+        "doctor che time sanga", "opd hours", "visiting hours"
+      ]
+    },
+    {
+      "name": "doctor_availability",
+      "examples": [
+        "is doctor available", "is doctor in opd", "doctor present", "doctor ahet ka",
+        "doctor cabin madhe ahet ka", "is dr awari available", "doctor hai kya",
+        "who is the doctor", "which doctor is sitting right now", "doctor status"
+      ]
+    },
+    {
+      "name": "emergency_contact",
+      "examples": [
+        "emergency", "urgent", "emergency number", "phone number", "contact number",
+        "call hospital", "emergency no", "urgent help", "number dya", "phone kara",
+        "emergency ward", "accident help"
+      ]
+    },
+    {
+      "name": "ambulance",
+      "examples": [
+        "ambulance", "ambulance number", "ambulance available", "call ambulance",
+        "ambulance ahe ka", "ambulance pahije", "emergency vehicle", "als ambulance", "bls ambulance"
+      ]
+    },
+    {
+      "name": "address_directions",
+      "examples": [
+        "address", "location", "where is hospital", "directions", "kothe ahe",
+        "kaha par hai", "hospital cha patta", "how to reach", "map location", "botal", "belhe", "sangamner", "junnar"
+      ]
+    },
+    {
+      "name": "insurance_pmjay",
+      "examples": [
+        "pmjay", "ayushman bharat", "insurance", "cashless", "claim", "yojana", "gov scheme",
+        "pmjay chalel ka", "ayushman card", "mediclaim", "pmjay accepted"
+      ]
+    },
+    {
+      "name": "pharmacy",
+      "examples": [
+        "pharmacy", "medical store", "medicines", "dawa", "aushadh", "chemist", "24x7 pharmacy",
+        "medical dukan ahe ka", "medicine available"
+      ]
+    },
+    {
+      "name": "book_appointment",
+      "examples": [
+        "book appointment", "appointment", "token", "how to book", "appointment kasa karaycha",
+        "dr appointment", "token number", "online booking", "appointment ghyaychi ahe"
+      ]
+    },
+    {
+      "name": "medical_advice",
+      "examples": [
+        "i have fever", "headache cure", "chest pain", "what medicine should i take",
+        "pet dard ki dava", "vomiting medicine", "cough remedy", "symptom check", "tabiyat kharab hai",
+        "symptoms", "treatment"
+      ]
+    }
+  ]
+}
