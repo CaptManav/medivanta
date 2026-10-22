@@ -38,12 +38,12 @@ INSERT INTO hospitals (
     'a1b2c3d4-e5f6-7890-abcd-111111111111',
     'Dr. Awari Hospital',
     'private',
-    'Botal, Sangamner, Ahmednagar, Maharashtra 422605',
+    'A/P Bota, Tal. Sangamner, Ahmednagar, Maharashtra 422605',
     'Sangamner',
     'Ahmednagar',
     'Maharashtra',
-    19.5686, 74.2133,
-    NULL, NULL, NULL, NULL,
+    19.3496, 74.0863,
+    '9763245875', '9763245875', NULL, NULL,
     FALSE, FALSE, FALSE, TRUE, TRUE
 );
 
@@ -56,12 +56,12 @@ INSERT INTO hospitals (
     'a1b2c3d4-e5f6-7890-abcd-222222222222',
     'Samarth Ayurved College Hospital & Research Centre',
     'college',
-    'Belhe, Junnar, Pune, Maharashtra 412410',
+    'Nagar-Kalyan Highway, Bangarwadi, Belhe, Tal. Junnar, Pune, Maharashtra 412410',
     'Junnar',
     'Pune',
     'Maharashtra',
     19.2277, 73.8567,
-    NULL, NULL, NULL, NULL,
+    '8624843303', '9867253399', 'samarth.aayurvedic123@gmail.com', NULL,
     TRUE, TRUE, FALSE, TRUE, TRUE
 );
 
@@ -85,54 +85,54 @@ INSERT INTO hospital_departments (hospital_id, department_id) VALUES
 -- 4. DOCTORS
 -- ============================================================
 
--- Awari: Dr. Awari (BHMS)
+-- Awari: Dr. Ashish Awari (BHMS)
 INSERT INTO doctors (
     id, hospital_id, department_id, name, qualification, specialization, appointment_required
 ) VALUES (
     'dddddddd-1111-1111-1111-111111111111',
     'a1b2c3d4-e5f6-7890-abcd-111111111111',
     3,
-    'Dr. Awari',
+    'Dr. Ashish Awari',
     'BHMS',
-    'Homeopathy',
+    'Homeopathy & General Medicine',
     FALSE
 );
 
--- Samarth: Doctor 1 — Senior Ayurved Physician
+-- Samarth: Doctor 1 — Dr. Ramesh Padekar (Senior Ayurved Physician & Dy Superintendent)
 INSERT INTO doctors (
     id, hospital_id, department_id, name, qualification, specialization, appointment_required
 ) VALUES (
     'dddddddd-2222-2222-2222-222222222222',
     'a1b2c3d4-e5f6-7890-abcd-222222222222',
     2,
-    'Senior Physician',
+    'Dr. Ramesh Padekar',
     'BAMS, MD (Ayurveda)',
     'Kayachikitsa (General Medicine)',
     FALSE
 );
 
--- Samarth: Doctor 2 — Surgeon
+-- Samarth: Doctor 2 — Dr. Rawal Gunjal (General Surgery)
 INSERT INTO doctors (
     id, hospital_id, department_id, name, qualification, specialization, appointment_required
 ) VALUES (
     'dddddddd-3333-3333-3333-333333333333',
     'a1b2c3d4-e5f6-7890-abcd-222222222222',
     4,
-    'Surgeon',
+    'Dr. Rawal Gunjal',
     'BAMS, MS (Shalya Tantra)',
     'Shalya Tantra (Surgery)',
     FALSE
 );
 
--- Samarth: Doctor 3 — Panchakarma
+-- Samarth: Doctor 3 — Dr. Shubhangi Kokate (Panchakarma)
 INSERT INTO doctors (
     id, hospital_id, department_id, name, qualification, specialization, appointment_required
 ) VALUES (
     'dddddddd-4444-4444-4444-444444444444',
     'a1b2c3d4-e5f6-7890-abcd-222222222222',
     11,
-    'Panchakarma Specialist',
-    'BAMS, MD (Panchakarma)',
+    'Dr. Shubhangi Kokate',
+    'BAMS, MD (Kayachikitsa)',
     'Panchakarma',
     FALSE
 );
@@ -231,7 +231,7 @@ INSERT INTO bed_status (
 
 -- Samarth: 1 BLS ambulance
 INSERT INTO ambulances (hospital_id, type, contact, is_24x7) VALUES
-    ('a1b2c3d4-e5f6-7890-abcd-222222222222', 'BLS', NULL, TRUE);
+    ('a1b2c3d4-e5f6-7890-abcd-222222222222', 'BLS', '9561035760', TRUE);
 
 -- ============================================================
 -- 9. HOSPITAL_SERVICES
@@ -263,7 +263,7 @@ INSERT INTO users (id, name, email, phone, password_hash, role) VALUES (
     'MEDIVANTA Admin',
     'admin@medivanta.in',
     NULL,
-    '$2a$10$XQCg1z4YX1J5MzGMKOYLiOQm8VJ0VPxJZGRMzWBK5e9R1xGHJKdFe',
+    '$2a$10$SNPuyW4L7GxLYMsi8nkrqOxbPbvtKJGdhfJY/zknPdAi/lM0QlLgO',
     'super_admin'
 );
 
@@ -273,7 +273,7 @@ INSERT INTO users (id, name, email, phone, password_hash, role) VALUES (
     'Demo Patient',
     'patient@demo.com',
     '9876543210',
-    '$2a$10$RqH5b3B8Z5F5J7N2L1K4AeWV5V0VX1JZGRMzWBK5e9R1xGHJKdABC',
+    '$2a$10$ahvQ77njplT7fX2srd3dQuu6KdG5EMV9wGA61k8YmGhnFXn7O75h2',
     'patient'
 );
 
@@ -282,7 +282,7 @@ INSERT INTO hospital_admins (id, hospital_id, email, password_hash, is_active) V
     'bbbbbbbb-0000-0000-0000-000000000001',
     'a1b2c3d4-e5f6-7890-abcd-111111111111',
     'awari@medivanta.in',
-    '$2a$10$XQCg1z4YX1J5MzGMKOYLiOQm8VJ0VPxJZGRMzWBK5e9R1xGHJKdFe',
+    '$2a$10$SNPuyW4L7GxLYMsi8nkrqOxbPbvtKJGdhfJY/zknPdAi/lM0QlLgO',
     TRUE
 );
 
@@ -291,6 +291,6 @@ INSERT INTO hospital_admins (id, hospital_id, email, password_hash, is_active) V
     'bbbbbbbb-0000-0000-0000-000000000002',
     'a1b2c3d4-e5f6-7890-abcd-222222222222',
     'samarth@medivanta.in',
-    '$2a$10$XQCg1z4YX1J5MzGMKOYLiOQm8VJ0VPxJZGRMzWBK5e9R1xGHJKdFe',
+    '$2a$10$SNPuyW4L7GxLYMsi8nkrqOxbPbvtKJGdhfJY/zknPdAi/lM0QlLgO',
     TRUE
 );

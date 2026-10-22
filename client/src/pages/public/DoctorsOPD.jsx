@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Clock, Calendar, Search, MapPin, Building2, CheckCircle2 } from 'lucide-react';
+import { Users, Clock, Calendar, Search, MapPin, Building2, CheckCircle2, Phone, Stethoscope, Camera } from 'lucide-react';
 import api from '../../services/api.js';
 import { Card, CardBody } from '../../components/ui/Card.jsx';
 import { Badge } from '../../components/ui/Badge.jsx';
@@ -27,6 +27,7 @@ export const DoctorsOPD = () => {
           hospitalId: h.id,
           hospitalName: h.name,
           hospitalTaluka: h.taluka,
+          hospitalPhone: h.phone,
         }));
       });
 
@@ -72,15 +73,20 @@ export const DoctorsOPD = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Doctors & OPD Weekly Schedule</h1>
-          <p className="text-sm text-slate-500 mt-1">
-            Live doctor attendance status and consulting hours across verified clinics and hospitals.
+          <div className="flex items-center gap-2 mb-1">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Doctors & OPD Weekly Schedule</h1>
+            <Link to="/photos" className="text-xs text-teal-600 font-semibold hover:underline flex items-center gap-1">
+              <Camera className="w-3.5 h-3.5" /> Doctor Photos
+            </Link>
+          </div>
+          <p className="text-sm text-slate-500">
+            Live doctor attendance status and consulting hours across verified clinics and hospitals in Bota & Belhe.
           </p>
         </div>
 
         <div className="w-full sm:w-72">
           <Input
-            placeholder="Search doctor or specialization..."
+            placeholder="Search doctor, Bota, Belhe, surgery..."
             icon={Search}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -111,51 +117,77 @@ export const DoctorsOPD = () => {
                 ? '🔴 On Leave'
                 : '🟡 Not in OPD';
 
+            const contactPhone = doc.phone || doc.hospitalPhone;
+
             return (
-              <Card key={doc.id} hover className="flex flex-col justify-between">
+              <Card key={doc.id} hover className="flex flex-col justify-between overflow-hidden">
                 <CardBody className="p-5 space-y-3 flex-1 flex flex-col justify-between">
                   <div>
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <div>
-                        <h3 className="font-bold text-base text-slate-900">{doc.name}</h3>
-                        <p className="text-xs text-teal-600 font-medium">{doc.qualification}</p>
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <div className="flex items-start gap-3">
+                        {doc.photo ? (
+                          <img
+                            src={doc.photo}
+                            alt={doc.name}
+                            className="w-14 h-14 rounded-xl object-cover border border-slate-200 shrink-0"
+                          />
+                        ) : (
+                          <div className="w-14 h-14 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
+                            <Stethoscope className="w-6 h-6" />
+                          </div>
+                        )}
+                        <div>
+                          <h3 className="font-bold text-base text-slate-900">{doc.name}</h3>
+                          <p className="text-xs text-teal-600 font-medium">{doc.qualification}</p>
+                          <p className="text-xs text-slate-500">{doc.specialization}</p>
+                        </div>
                       </div>
-                      <Badge variant={statusVariant} size="sm" className="shrink-0">
+                      <Badge variant={statusVariant} size="sm" className="shrink-0 text-[11px]">
                         {statusText}
                       </Badge>
                     </div>
 
-                    <p className="text-xs text-slate-600 mb-2 font-medium">{doc.specialization}</p>
-
-                    <div className="flex items-center gap-1.5 text-xs text-slate-500 mb-3 bg-slate-50 p-2 rounded-lg">
+                    <div className="flex items-center gap-1.5 text-xs text-slate-600 mb-3 bg-slate-50 p-2 rounded-lg">
                       <Building2 className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      <span className="truncate">{doc.hospitalName} ({doc.hospitalTaluka})</span>
+                      <span className="truncate font-medium">{doc.hospitalName} ({doc.hospitalTaluka})</span>
                     </div>
 
                     {/* Schedule */}
                     <div className="border-t border-slate-100 pt-2.5">
-                      <span className="text-[11px] font-semibold text-slate-400 block mb-1">Weekly Consultation Hours:</span>
+                      <span className="text-[11px] font-semibold text-slate-400 block mb-1">
+                        Weekly Consultation Hours:
+                      </span>
                       {doc.opd_schedules && doc.opd_schedules.length > 0 ? (
                         <div className="space-y-1">
                           {doc.opd_schedules.map((s, idx) => (
                             <div key={idx} className="flex justify-between text-xs text-slate-600">
                               <span className="font-medium text-slate-700">{daysOfWeek[s.weekday]}:</span>
-                              <span>{s.start_time.slice(0, 5)} - {s.end_time.slice(0, 5)}</span>
+                              <span>
+                                {s.start_time.slice(0, 5)} - {s.end_time.slice(0, 5)}
+                              </span>
                             </div>
                           ))}
                         </div>
                       ) : (
-                        <p className="text-xs text-slate-400">Consultations during hospital working hours.</p>
+                        <p className="text-xs text-slate-400">Regular consultations during operating hours.</p>
                       )}
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-100">
+                  <div className="pt-3 border-t border-slate-100 space-y-2">
                     <Link to={`/book-appointment?hospitalId=${doc.hospitalId}&doctorId=${doc.id}`}>
                       <Button variant="primary" size="sm" className="w-full">
                         Book Appointment / Token
                       </Button>
                     </Link>
+                    {contactPhone && (
+                      <a href={`tel:${contactPhone}`}>
+                        <Button variant="outline" size="sm" className="w-full text-xs text-slate-700">
+                          <Phone className="w-3 h-3 mr-1 text-teal-600" />
+                          Call Doctor / Hospital: {contactPhone}
+                        </Button>
+                      </a>
+                    )}
                   </div>
                 </CardBody>
               </Card>

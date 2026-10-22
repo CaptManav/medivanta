@@ -52,7 +52,7 @@ export const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li>
                 <span className="text-slate-300 block font-medium">Dr. Awari Hospital</span>
-                <span className="text-xs text-slate-500">Botal, Sangamner (10 Beds)</span>
+                <span className="text-xs text-slate-500">Bota, Sangamner (10 Beds)</span>
               </li>
               <li>
                 <span className="text-slate-300 block font-medium">Samarth Ayurved College Hospital</span>

@@ -98,13 +98,19 @@ export const Home = () => {
               onClick={() => navigate('/hospitals?taluka=Sangamner')}
               className="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors"
             >
-              Sangamner
+              Bota (Sangamner)
             </button>
             <button
               onClick={() => navigate('/hospitals?taluka=Junnar')}
               className="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors"
             >
-              Junnar
+              Belhe (Junnar)
+            </button>
+            <button
+              onClick={() => navigate('/photos')}
+              className="px-2.5 py-1 rounded-full bg-teal-900/80 hover:bg-teal-800 text-teal-200 border border-teal-700/50 transition-colors flex items-center gap-1"
+            >
+              📸 Photos Gallery
             </button>
             <button
               onClick={() => navigate('/hospitals?is_24x7=true')}
@@ -237,6 +243,81 @@ export const Home = () => {
           {hospitals.map((h) => (
             <HospitalCard key={h.id} hospital={h} />
           ))}
+        </div>
+      </section>
+
+      {/* Verified Photo Tour Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-6 sm:p-8 text-white border border-slate-700 shadow-xl space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-teal-400 block mb-1">
+                Visual Field Verification
+              </span>
+              <h2 className="text-xl sm:text-2xl font-bold text-white">
+                Hospital & Doctor Photographic Records
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                Photographs from Dr. Awari Hospital (Bota) and Samarth Ayurved College Hospital & Research Centre (Belhe).
+              </p>
+            </div>
+            <Link to="/photos">
+              <Button variant="primary" size="md" className="gap-2 shrink-0">
+                <span>View Full Photo Gallery</span>
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Link to="/photos" className="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-slate-800 border border-slate-700">
+              <img
+                src="/photos/awari/dr_awari_consultation.jpeg"
+                alt="Dr. Ashish Awari Bota"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex flex-col justify-end p-3">
+                <span className="text-[11px] font-bold text-white">Dr. Ashish Awari</span>
+                <span className="text-[10px] text-teal-300">Dr. Awari Hospital, Bota</span>
+              </div>
+            </Link>
+
+            <Link to="/photos" className="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-slate-800 border border-slate-700">
+              <img
+                src="/photos/samarth/samarth_building_entrance.jpeg"
+                alt="Samarth Hospital Entrance Belhe"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex flex-col justify-end p-3">
+                <span className="text-[11px] font-bold text-white">Campus Building</span>
+                <span className="text-[10px] text-teal-300">Samarth Hospital, Belhe</span>
+              </div>
+            </Link>
+
+            <Link to="/photos" className="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-slate-800 border border-slate-700">
+              <img
+                src="/photos/samarth/samarth_reception_board.jpeg"
+                alt="Samarth Hospital Reception Counter"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex flex-col justify-end p-3">
+                <span className="text-[11px] font-bold text-white">Reception & Welcome</span>
+                <span className="text-[10px] text-teal-300">Line: 8624843303</span>
+              </div>
+            </Link>
+
+            <Link to="/photos" className="group relative rounded-2xl overflow-hidden aspect-[4/3] bg-slate-800 border border-slate-700">
+              <img
+                src="/photos/samarth/dr_ramesh_padekar.jpeg"
+                alt="Dr. Ramesh Padekar Deputy Superintendent"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex flex-col justify-end p-3">
+                <span className="text-[11px] font-bold text-white">Dr. Ramesh Padekar</span>
+                <span className="text-[10px] text-teal-300">Dy Superintendent</span>
+              </div>
+            </Link>
+          </div>
         </div>
       </section>
 

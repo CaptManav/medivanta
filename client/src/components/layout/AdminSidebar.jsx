@@ -13,7 +13,7 @@ import {
 import { useAuth } from '../../hooks/useAuth.js';
 
 export const AdminSidebar = () => {
-  const { admin, logout } = useAuth();
+  const { admin, logout, switchHospital } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -42,10 +42,40 @@ export const AdminSidebar = () => {
             <span className="text-[10px] text-teal-400 font-medium uppercase tracking-wider">Hospital Staff Portal</span>
           </div>
         </div>
-        <div className="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
-          <p className="text-xs text-slate-400">Managing Facility</p>
-          <p className="text-sm font-semibold text-white truncate">{admin?.hospitalName || 'Hospital Admin'}</p>
-          <p className="text-[11px] text-teal-400 truncate">{admin?.email}</p>
+        <div className="bg-slate-800/80 p-2.5 rounded-lg border border-slate-700 space-y-2">
+          <div>
+            <p className="text-[11px] text-slate-400">Managing Facility</p>
+            <p className="text-sm font-semibold text-white truncate">{admin?.hospitalName || 'Dr. Awari Hospital'}</p>
+            <p className="text-[11px] text-teal-400 truncate">{admin?.email}</p>
+          </div>
+          <div className="pt-1.5 border-t border-slate-700/60 flex items-center gap-1.5">
+            <button
+              onClick={() => {
+                switchHospital('a1b2c3d4-e5f6-7890-abcd-111111111111');
+                window.location.reload();
+              }}
+              className={`flex-1 py-1 rounded text-[10px] font-bold transition-colors ${
+                admin?.hospitalId === 'a1b2c3d4-e5f6-7890-abcd-111111111111'
+                  ? 'bg-teal-600 text-white'
+                  : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+              }`}
+            >
+              Awari (Bota)
+            </button>
+            <button
+              onClick={() => {
+                switchHospital('a1b2c3d4-e5f6-7890-abcd-222222222222');
+                window.location.reload();
+              }}
+              className={`flex-1 py-1 rounded text-[10px] font-bold transition-colors ${
+                admin?.hospitalId === 'a1b2c3d4-e5f6-7890-abcd-222222222222'
+                  ? 'bg-teal-600 text-white'
+                  : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+              }`}
+            >
+              Samarth (Belhe)
+            </button>
+          </div>
         </div>
       </div>
 

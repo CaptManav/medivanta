@@ -67,7 +67,7 @@ medivanta/
 
 | Hospital | Location | Beds | ICU | 24×7 |
 |----------|----------|------|-----|------|
-| Dr. Awari Hospital | Botal, Sangamner | 10 | — | No |
+| Dr. Awari Hospital | Bota, Sangamner | 10 | — | No |
 | Samarth Ayurved College Hospital | Belhe, Junnar | 100 | 5 | Yes |
 
 ## License

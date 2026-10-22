@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { PhoneCall, ShieldAlert, Ambulance as AmbulanceIcon, Building2, MapPin, AlertTriangle, ArrowRight } from 'lucide-react';
+import {
+  PhoneCall,
+  ShieldAlert,
+  Ambulance as AmbulanceIcon,
+  Building2,
+  MapPin,
+  AlertTriangle,
+  ArrowRight,
+  Phone,
+  Pill,
+} from 'lucide-react';
 import api from '../../services/api.js';
 import { Card, CardHeader, CardBody, CardTitle } from '../../components/ui/Card.jsx';
 import { Button } from '../../components/ui/Button.jsx';
@@ -9,15 +19,15 @@ export const Emergency = () => {
   const [hospitals, setHospitals] = useState([]);
 
   useEffect(() => {
-    const fetch24x7 = async () => {
+    const fetchHospitals = async () => {
       try {
-        const res = await api.get('/hospitals', { params: { is_24x7: 'true' } });
+        const res = await api.get('/hospitals');
         setHospitals(res.data.data || []);
       } catch (err) {
         console.error('Failed to load emergency facilities:', err);
       }
     };
-    fetch24x7();
+    fetchHospitals();
   }, []);
 
   return (
@@ -50,67 +60,94 @@ export const Emergency = () => {
             </button>
           </a>
 
-          <a href="tel:102" className="w-full">
+          <a href="tel:9561035760" className="w-full">
             <button className="w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-4 px-6 rounded-xl shadow-lg flex items-center justify-center gap-3 text-lg transition-transform hover:scale-[1.02]">
-              <PhoneCall className="w-6 h-6" />
-              <span>Dial 102 (Maternal / Infant)</span>
+              <AmbulanceIcon className="w-6 h-6" />
+              <span>Belhe Ambulance (9561035760)</span>
             </button>
           </a>
         </div>
       </div>
 
-      {/* 24x7 Operational Facilities */}
+      {/* Hospital Emergency Contacts */}
       <div className="space-y-4">
         <div>
           <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
             <Building2 className="w-5 h-5 text-teal-600" />
-            24x7 Emergency Hospital Units in Network
+            Hospital Direct Emergency Lines & Ambulances
           </h2>
-          <p className="text-xs text-slate-500">Facilities equipped with around-the-clock emergency casualty and admissions.</p>
+          <p className="text-xs text-slate-500">
+            Direct verified phone numbers for Dr. Awari Hospital (Bota) and Samarth Hospital (Belhe).
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {hospitals.map((h) => (
-            <Card key={h.id} className="border-slate-200">
-              <CardBody className="p-5 space-y-3">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="font-bold text-base text-slate-800">{h.name}</h3>
-                    <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
-                      <MapPin className="w-3.5 h-3.5 text-slate-400" />
-                      <span>{h.address}</span>
-                    </p>
+          {hospitals.map((h) => {
+            const isSamarth = h.name.includes('Samarth');
+            return (
+              <Card key={h.id} className="border-slate-200">
+                <CardBody className="p-5 space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="font-bold text-base text-slate-900">{h.name}</h3>
+                      <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
+                        <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                        <span>{h.address}</span>
+                      </p>
+                    </div>
+                    <Badge variant={h.is_24x7 ? 'success' : 'neutral'} size="sm" dot={h.is_24x7}>
+                      {h.is_24x7 ? '24x7 Casualty' : 'Daytime OPD'}
+                    </Badge>
                   </div>
-                  <Badge variant="success" size="sm" dot>24x7 Casualty</Badge>
-                </div>
 
-                <div className="grid grid-cols-2 gap-2 bg-slate-50 p-2.5 rounded-xl text-xs text-slate-600">
-                  <div>
-                    <span className="text-slate-400 block font-medium">Free ICU Beds</span>
-                    <span className="font-bold text-slate-800 text-sm">{h.icu_avail ?? 0}</span>
+                  <div className="grid grid-cols-2 gap-2 bg-slate-50 p-2.5 rounded-xl text-xs text-slate-600">
+                    <div>
+                      <span className="text-slate-400 block font-medium">Free ICU Beds</span>
+                      <span className="font-bold text-slate-800 text-sm">{h.icu_avail ?? 0}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block font-medium">Free General Beds</span>
+                      <span className="font-bold text-slate-800 text-sm">{h.general_avail ?? 0}</span>
+                    </div>
                   </div>
-                  <div>
-                    <span className="text-slate-400 block font-medium">Free General Beds</span>
-                    <span className="font-bold text-slate-800 text-sm">{h.general_avail ?? 0}</span>
-                  </div>
-                </div>
 
-                <div className="pt-2 flex gap-2">
-                  {h.phone ? (
-                    <a href={`tel:${h.phone}`} className="flex-1">
-                      <Button variant="danger" size="sm" className="w-full">
-                        <PhoneCall className="w-4 h-4 mr-1.5" /> Call Desk: {h.phone}
+                  <div className="space-y-2 pt-1 border-t border-slate-100">
+                    {/* Primary Desk Call */}
+                    <a href={`tel:${h.phone || (isSamarth ? '8624843303' : '9763245875')}`} className="block">
+                      <Button variant="danger" size="md" className="w-full">
+                        <PhoneCall className="w-4 h-4 mr-1.5" /> Call Hospital Desk:{' '}
+                        {h.phone || (isSamarth ? '8624843303' : '9763245875')}
                       </Button>
                     </a>
-                  ) : (
-                    <Button variant="secondary" size="sm" className="w-full" disabled>
-                      Desk Direct Line On Admission
-                    </Button>
-                  )}
-                </div>
-              </CardBody>
-            </Card>
-          ))}
+
+                    {/* Special contacts */}
+                    {isSamarth ? (
+                      <div className="grid grid-cols-2 gap-2 pt-1">
+                        <a href="tel:9561035760">
+                          <Button variant="outline" size="sm" className="w-full text-xs">
+                            <AmbulanceIcon className="w-3.5 h-3.5 mr-1 text-teal-600" /> Ambulance: 9561035760
+                          </Button>
+                        </a>
+                        <a href="tel:8459576711">
+                          <Button variant="outline" size="sm" className="w-full text-xs">
+                            <Pill className="w-3.5 h-3.5 mr-1 text-teal-600" /> Pharmacy: 8459576711
+                          </Button>
+                        </a>
+                      </div>
+                    ) : (
+                      <div className="pt-1">
+                        <a href="tel:9763245875">
+                          <Button variant="outline" size="sm" className="w-full text-xs">
+                            <Phone className="w-3.5 h-3.5 mr-1 text-teal-600" /> Dr. Ashish Awari: 9763245875
+                          </Button>
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </CardBody>
+              </Card>
+            );
+          })}
         </div>
       </div>
 
@@ -125,15 +162,15 @@ export const Emergency = () => {
         <CardBody className="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-              <h4 className="font-semibold text-slate-800 mb-1">Basic Life Support (BLS)</h4>
+              <h4 className="font-semibold text-slate-800 mb-1">Basic Life Support (BLS) Ambulance</h4>
               <p className="text-xs text-slate-500">
-                Equipped with emergency oxygen, stretcher, vitals monitoring, and first responder kit for stable patient transport. Available at Samarth Ayurved College Hospital.
+                Equipped with emergency oxygen, stretcher, vitals monitoring, and first responder kit for stable patient transport. Standby ambulance at Samarth Ayurved College Hospital, Belhe (Driver: <strong>9561035760</strong>).
               </p>
             </div>
             <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
-              <h4 className="font-semibold text-slate-800 mb-1">Advanced Life Support (ALS)</h4>
+              <h4 className="font-semibold text-slate-800 mb-1">Advanced Life Support (ALS) Ambulance</h4>
               <p className="text-xs text-slate-500">
-                Equipped with ventilator, defibrillator, emergency cardiac medication, and paramedic for critical transfer. Dispatched on dialing 108.
+                Equipped with ventilator, defibrillator, emergency cardiac medication, and paramedic for critical transfer. Dispatched on dialing <strong>108</strong> (Toll-Free).
               </p>
             </div>
           </div>

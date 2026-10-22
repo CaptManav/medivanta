@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { BedDouble, HeartPulse, Clock, Save, RefreshCw, CheckCircle2, AlertTriangle, Users, Plus, Minus } from 'lucide-react';
 import api from '../../services/api.js';
+import { useAuth } from '../../hooks/useAuth.js';
 import { Card, CardHeader, CardBody, CardTitle } from '../../components/ui/Card.jsx';
 import { Button } from '../../components/ui/Button.jsx';
 import { Badge } from '../../components/ui/Badge.jsx';
 import { timeAgo } from '../../utils/formatTime.js';
+import { AWARI_ID, SAMARTH_ID } from '../../services/mockData.js';
 
 export const QuickUpdate = () => {
+  const { admin, switchHospital } = useAuth();
   const [beds, setBeds] = useState(null);
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -92,12 +95,59 @@ export const QuickUpdate = () => {
 
   return (
     <div className="space-y-6">
+      {/* Facility Switcher Banner */}
+      <div className="bg-slate-900 text-white p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-slate-800 shadow-md">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-teal-600 flex items-center justify-center text-white shrink-0">
+            <BedDouble className="w-5 h-5" />
+          </div>
+          <div>
+            <span className="text-[11px] font-bold text-teal-400 uppercase tracking-wider block">
+              Currently Editing Hospital
+            </span>
+            <h2 className="text-base font-bold text-white leading-tight">
+              {admin?.hospitalName || 'Dr. Awari Hospital'}
+            </h2>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-slate-400">Switch Facility:</span>
+          <button
+            onClick={async () => {
+              switchHospital(AWARI_ID);
+              await fetchData();
+            }}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+              admin?.hospitalId === AWARI_ID
+                ? 'bg-teal-600 text-white'
+                : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+            }`}
+          >
+            Dr. Awari (Bota)
+          </button>
+          <button
+            onClick={async () => {
+              switchHospital(SAMARTH_ID);
+              await fetchData();
+            }}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+              admin?.hospitalId === SAMARTH_ID
+                ? 'bg-teal-600 text-white'
+                : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+            }`}
+          >
+            Samarth (Belhe)
+          </button>
+        </div>
+      </div>
+
       {/* Title */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Hospital Live Telemetry & Quick Updates</h1>
           <p className="text-xs text-slate-500 mt-1">
-            Tap +/- to alter bed vacancies. Changes push instantaneously via WebSocket to patient monitors.
+            Tap +/- to alter bed vacancies. Changes push instantaneously to patient monitors.
           </p>
         </div>
 

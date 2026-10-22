@@ -107,11 +107,36 @@ export const AdminLogin = () => {
             className="bg-slate-800 border-slate-700 text-white placeholder-slate-500"
           />
 
-          <div className="bg-slate-800/60 p-3 rounded-lg border border-slate-800 text-[11px] text-slate-400">
-            🔒 <strong>Staff Accounts:</strong><br />
-            • <code>awari@medivanta.in</code> (Dr. Awari Hospital)<br />
-            • <code>samarth@medivanta.in</code> (Samarth Ayurved College)<br />
-            Password for both: <code>admin123</code>
+          <div className="bg-slate-800/80 p-3 rounded-xl border border-slate-700 text-xs space-y-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-teal-400 block">⚡ Instant 1-Click Staff Access:</span>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={async () => {
+                  setSelectedHospitalId('a1b2c3d4-e5f6-7890-abcd-111111111111');
+                  setEmail('awari@medivanta.in');
+                  setPassword('admin123');
+                  await adminLogin('a1b2c3d4-e5f6-7890-abcd-111111111111', 'awari@medivanta.in', 'admin123');
+                  navigate('/admin/dashboard', { replace: true });
+                }}
+                className="py-1.5 px-2 bg-slate-700 hover:bg-teal-700 text-white rounded-lg text-xs font-semibold text-center transition-colors"
+              >
+                Dr. Awari (Bota)
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  setSelectedHospitalId('a1b2c3d4-e5f6-7890-abcd-222222222222');
+                  setEmail('samarth@medivanta.in');
+                  setPassword('admin123');
+                  await adminLogin('a1b2c3d4-e5f6-7890-abcd-222222222222', 'samarth@medivanta.in', 'admin123');
+                  navigate('/admin/dashboard', { replace: true });
+                }}
+                className="py-1.5 px-2 bg-slate-700 hover:bg-teal-700 text-white rounded-lg text-xs font-semibold text-center transition-colors"
+              >
+                Samarth (Belhe)
+              </button>
+            </div>
           </div>
 
           <Button type="submit" variant="primary" size="md" className="w-full" isLoading={loading}>

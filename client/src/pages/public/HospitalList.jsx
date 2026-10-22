@@ -123,8 +123,8 @@ export const HospitalList = () => {
               onChange={(e) => setTaluka(e.target.value)}
               options={[
                 { value: '', label: 'All Regions' },
-                { value: 'Sangamner', label: 'Sangamner' },
-                { value: 'Junnar', label: 'Junnar' },
+                { value: 'Sangamner', label: 'Bota / Sangamner' },
+                { value: 'Junnar', label: 'Belhe / Junnar' },
               ]}
             />
 

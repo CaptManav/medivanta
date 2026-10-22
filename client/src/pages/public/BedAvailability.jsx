@@ -156,6 +156,14 @@ export const BedAvailability = () => {
                     </div>
 
                     <div className="flex items-center gap-2">
+                      {h.phone && (
+                        <a href={`tel:${h.phone}`}>
+                          <Button variant="outline" size="sm">
+                            <Phone className="w-3.5 h-3.5 mr-1 text-teal-600" />
+                            Call: {h.phone}
+                          </Button>
+                        </a>
+                      )}
                       <Link to={`/hospitals/${h.id}`}>
                         <Button variant="secondary" size="sm">
                           Hospital Profile

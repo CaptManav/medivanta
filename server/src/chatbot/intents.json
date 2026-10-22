@@ -49,7 +49,7 @@
       "name": "address_directions",
       "examples": [
         "address", "location", "where is hospital", "directions", "kothe ahe",
-        "kaha par hai", "hospital cha patta", "how to reach", "map location", "botal", "belhe", "sangamner", "junnar"
+        "kaha par hai", "hospital cha patta", "how to reach", "map location", "bota", "botal", "belhe", "sangamner", "junnar"
       ]
     },
     {

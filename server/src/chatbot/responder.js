@@ -164,7 +164,7 @@ export const handleChatMessage = async (userMessage, userId = null, selectedHosp
       if (targetHospital) {
         reply = `📍 ${targetHospital.name}\nAddress: ${targetHospital.address}\nTaluka: ${targetHospital.taluka}, District: ${targetHospital.district}`;
       } else {
-        reply = `Our network covers:\n• Dr. Awari Hospital: Botal, Sangamner, Ahmednagar\n• Samarth Ayurved College Hospital & Research Centre: Belhe, Junnar, Pune\n\nWhich hospital do you need directions for?`;
+        reply = `Our network covers:\n• Dr. Awari Hospital: Bota, Sangamner, Ahmednagar\n• Samarth Ayurved College Hospital & Research Centre: Belhe, Junnar, Pune\n\nWhich hospital do you need directions for?`;
       }
       break;
     }
@@ -192,7 +192,7 @@ export const handleChatMessage = async (userMessage, userId = null, selectedHosp
           reply = `${targetHospital.name} does not have an in-house 24x7 pharmacy listed. Nearest local chemist recommended.`;
         }
       } else {
-        reply = `Samarth Ayurved College Hospital has an in-house 24x7 Pharmacy. For Dr. Awari Hospital, local pharmacies in Botal/Sangamner are accessible.`;
+        reply = `Samarth Ayurved College Hospital has an in-house 24x7 Pharmacy. For Dr. Awari Hospital, local pharmacies in Bota/Sangamner are accessible.`;
       }
       break;
     }

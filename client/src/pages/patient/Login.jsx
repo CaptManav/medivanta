@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Activity, Lock, Mail, Building2, User, AlertCircle } from 'lucide-react';
+import { Activity, Lock, Mail, Building2, User, AlertCircle, Zap, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth.js';
 import { Button } from '../../components/ui/Button.jsx';
 import { Input } from '../../components/ui/Input.jsx';
 import { Select } from '../../components/ui/Select.jsx';
 import api from '../../services/api.js';
+import { AWARI_ID, SAMARTH_ID } from '../../services/mockData.js';
 
 export const Login = () => {
   const [tab, setTab] = useState('patient'); // 'patient' | 'staff'
@@ -21,10 +22,14 @@ export const Login = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // If coming from staff link, set tab to staff
-    if (location.pathname.includes('admin') || location.search.includes('staff')) {
+    // If coming from staff link or query params
+    const params = new URLSearchParams(location.search);
+    if (location.pathname.includes('admin') || params.get('tab') === 'staff') {
       setTab('staff');
+    } else if (params.get('tab') === 'patient') {
+      setTab('patient');
     }
+
     // Fetch hospitals for staff dropdown
     const fetchHospitals = async () => {
       try {
@@ -42,24 +47,58 @@ export const Login = () => {
   }, [location]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     setError('');
     setLoading(true);
 
     try {
       if (tab === 'patient') {
-        await login(email, password);
+        const mailToUse = email.trim() || 'patient@demo.com';
+        const passToUse = password || 'patient123';
+        await login(mailToUse, passToUse);
         const from = location.state?.from?.pathname || '/dashboard';
         navigate(from, { replace: true });
       } else {
-        if (!selectedHospitalId) {
-          throw new Error('Please select your hospital facility.');
-        }
-        await adminLogin(selectedHospitalId, email, password);
+        const hospId = selectedHospitalId || AWARI_ID;
+        const mailToUse = email.trim() || (hospId === AWARI_ID ? 'awari@medivanta.in' : 'samarth@medivanta.in');
+        const passToUse = password || 'admin123';
+        await adminLogin(hospId, mailToUse, passToUse);
         navigate('/admin/dashboard', { replace: true });
       }
     } catch (err) {
       setError(err.response?.data?.error || err.message || 'Authentication failed. Please verify credentials.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleInstantDemo = async (roleType) => {
+    setError('');
+    setLoading(true);
+    try {
+      if (roleType === 'awari') {
+        setTab('staff');
+        setSelectedHospitalId(AWARI_ID);
+        setEmail('awari@medivanta.in');
+        setPassword('admin123');
+        await adminLogin(AWARI_ID, 'awari@medivanta.in', 'admin123');
+        navigate('/admin/dashboard');
+      } else if (roleType === 'samarth') {
+        setTab('staff');
+        setSelectedHospitalId(SAMARTH_ID);
+        setEmail('samarth@medivanta.in');
+        setPassword('admin123');
+        await adminLogin(SAMARTH_ID, 'samarth@medivanta.in', 'admin123');
+        navigate('/admin/dashboard');
+      } else {
+        setTab('patient');
+        setEmail('patient@demo.com');
+        setPassword('patient123');
+        await login('patient@demo.com', 'patient123');
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      setError('Instant demo login failed: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -74,7 +113,7 @@ export const Login = () => {
             <Activity className="w-6 h-6" />
           </div>
           <h2 className="text-xl font-bold tracking-tight">Sign In to MEDIVANTA</h2>
-          <p className="text-xs text-slate-400">Choose your role to access personalized services</p>
+          <p className="text-xs text-slate-400">Choose your role to access live hospital services</p>
         </div>
 
         {/* Tab Switcher */}
@@ -84,10 +123,11 @@ export const Login = () => {
             onClick={() => {
               setTab('patient');
               setError('');
+              if (email === 'awari@medivanta.in' || email === 'samarth@medivanta.in') setEmail('');
             }}
             className={`flex-1 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
               tab === 'patient'
-                ? 'bg-white text-slate-900 shadow-sm'
+                ? 'bg-white text-slate-900 shadow-sm border border-slate-200'
                 : 'text-slate-500 hover:text-slate-800'
             }`}
           >
@@ -99,16 +139,52 @@ export const Login = () => {
             onClick={() => {
               setTab('staff');
               setError('');
+              if (!email || email === 'patient@demo.com') {
+                setEmail('awari@medivanta.in');
+                setPassword('admin123');
+              }
             }}
             className={`flex-1 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
               tab === 'staff'
-                ? 'bg-white text-slate-900 shadow-sm'
+                ? 'bg-white text-slate-900 shadow-sm border border-slate-200'
                 : 'text-slate-500 hover:text-slate-800'
             }`}
           >
             <Building2 className="w-4 h-4 text-teal-600" />
-            Hospital Staff
+            Hospital Staff / Admin
           </button>
+        </div>
+
+        {/* 1-Click Fast Access Box for Demos */}
+        <div className="bg-teal-50/60 border-b border-teal-100 p-3 text-xs text-teal-900 space-y-1.5">
+          <div className="flex items-center justify-between font-semibold">
+            <span className="flex items-center gap-1 text-teal-800">
+              <Zap className="w-3.5 h-3.5 text-teal-600" /> Instant 1-Click Demo Login:
+            </span>
+          </div>
+          <div className="grid grid-cols-3 gap-1.5 pt-0.5">
+            <button
+              type="button"
+              onClick={() => handleInstantDemo('awari')}
+              className="py-1.5 px-2 bg-white hover:bg-teal-100/70 border border-teal-200 rounded-lg text-[11px] font-medium text-slate-800 text-center transition-colors shadow-2xs"
+            >
+              Dr. Awari (Bota)
+            </button>
+            <button
+              type="button"
+              onClick={() => handleInstantDemo('samarth')}
+              className="py-1.5 px-2 bg-white hover:bg-teal-100/70 border border-teal-200 rounded-lg text-[11px] font-medium text-slate-800 text-center transition-colors shadow-2xs"
+            >
+              Samarth (Belhe)
+            </button>
+            <button
+              type="button"
+              onClick={() => handleInstantDemo('patient')}
+              className="py-1.5 px-2 bg-white hover:bg-teal-100/70 border border-teal-200 rounded-lg text-[11px] font-medium text-slate-800 text-center transition-colors shadow-2xs"
+            >
+              Demo Patient
+            </button>
+          </div>
         </div>
 
         {/* Login Form */}
@@ -124,12 +200,20 @@ export const Login = () => {
             <Select
               label="Select Your Hospital Facility"
               value={selectedHospitalId}
-              onChange={(e) => setSelectedHospitalId(e.target.value)}
+              onChange={(e) => {
+                setSelectedHospitalId(e.target.value);
+                if (e.target.value === AWARI_ID) {
+                  setEmail('awari@medivanta.in');
+                } else {
+                  setEmail('samarth@medivanta.in');
+                }
+                setPassword('admin123');
+              }}
               required
             >
               {hospitals.map((h) => (
                 <option key={h.id} value={h.id}>
-                  {h.name} ({h.taluka})
+                  {h.name} — {h.taluka}
                 </option>
               ))}
             </Select>
@@ -157,15 +241,15 @@ export const Login = () => {
 
           {tab === 'staff' && (
             <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-[11px] text-slate-500">
-              💡 <strong>Demo Credentials:</strong><br />
-              • Dr. Awari: <code>awari@medivanta.in</code> / <code>admin123</code><br />
-              • Samarth Hospital: <code>samarth@medivanta.in</code> / <code>admin123</code>
+              💡 <strong>Demo Hospital Staff Accounts:</strong><br />
+              • Dr. Awari (Bota): <code>awari@medivanta.in</code> / <code>admin123</code><br />
+              • Samarth Hospital (Belhe): <code>samarth@medivanta.in</code> / <code>admin123</code>
             </div>
           )}
 
           {tab === 'patient' && (
             <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-[11px] text-slate-500">
-              💡 <strong>Demo Patient:</strong> <code>patient@demo.com</code> / <code>patient123</code>
+              💡 <strong>Demo Patient Account:</strong> <code>patient@demo.com</code> / <code>patient123</code>
             </div>
           )}
 

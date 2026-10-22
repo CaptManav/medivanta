@@ -8,6 +8,7 @@ import { HospitalDetail } from '../pages/public/HospitalDetail.jsx';
 import { DoctorsOPD } from '../pages/public/DoctorsOPD.jsx';
 import { BedAvailability } from '../pages/public/BedAvailability.jsx';
 import { Emergency } from '../pages/public/Emergency.jsx';
+import { Gallery } from '../pages/public/Gallery.jsx';
 import { NotFound } from '../pages/public/NotFound.jsx';
 
 // Patient Pages
@@ -39,6 +40,8 @@ export const AppRouter = () => {
       <Route path="/doctors" element={<DoctorsOPD />} />
       <Route path="/beds" element={<BedAvailability />} />
       <Route path="/emergency" element={<Emergency />} />
+      <Route path="/photos" element={<Gallery />} />
+      <Route path="/gallery" element={<Gallery />} />
 
       {/* Auth */}
       <Route path="/login" element={<Login />} />

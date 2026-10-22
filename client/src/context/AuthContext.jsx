@@ -86,6 +86,22 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('medivanta_user');
   };
 
+  const switchHospital = (hospitalId) => {
+    const isAwari = hospitalId === 'a1b2c3d4-e5f6-7890-abcd-111111111111';
+    const newAdmin = {
+      ...(admin || {}),
+      hospitalId,
+      hospitalName: isAwari ? 'Dr. Awari Hospital' : 'Samarth Ayurved College Hospital & Research Centre',
+      email: isAwari ? 'awari@medivanta.in' : 'samarth@medivanta.in',
+      role: 'hospital_admin',
+    };
+    setAdmin(newAdmin);
+    setRole('hospital_admin');
+    localStorage.setItem('medivanta_role', 'hospital_admin');
+    localStorage.setItem('medivanta_user', JSON.stringify(newAdmin));
+    return newAdmin;
+  };
+
   const value = {
     user,
     admin,
@@ -97,6 +113,7 @@ export const AuthProvider = ({ children }) => {
     adminLogin,
     signup,
     logout,
+    switchHospital,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
